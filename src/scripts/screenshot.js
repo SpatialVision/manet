@@ -133,9 +133,10 @@
     function captureScreenshot(base64, outputFile, onFinish) {
         try {
             var options = parseOptions(base64),
-                page = createPage(options);
+                page = createPage(options),
+                url = options.url + (options.hashbang ? '/#' + options.hashbang : '');
 
-            page.open(options.url, function () {
+            page.open(url, function () {
                 try {
                     addStyles(page, DEF_STYLES);
                     renderScreenshotFile(page, options, outputFile, onFinish);
