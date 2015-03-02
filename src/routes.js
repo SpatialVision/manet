@@ -34,7 +34,8 @@ function createSchema() {
         user: joi.string().trim(),
         password: joi.string().trim(),
         callback: joi.string().trim(),
-        hashbang: joi.string().trim()
+        hashbang: joi.string().trim(),
+        elementid: joi.string().trim()
     });
 }
 

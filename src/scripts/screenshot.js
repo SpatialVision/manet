@@ -120,6 +120,19 @@
                     format: format
                 };
 
+                if(options.elementid){
+                    var elementRect = page.evaluate(function(id) {
+                        var element = document.getElementById(id);
+                        if(element){
+                            return element.getBoundingClientRect();
+                        }
+                    }, options.elementid);
+
+                    if(elementRect){
+                        page.clipRect = elementRect;
+                    }
+                }
+
                 page.render(outputFile, renderOptions);
 
                 log('Rendered screenshot: ' + outputFile);
