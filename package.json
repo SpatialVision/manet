@@ -64,7 +64,8 @@
         "imagemin-gifsicle": "^4.0.0",
         "imagemin-jpegtran": "^4.0.0",
         "imagemin-optipng": "^4.0.0",
-        "imagemin-svgo": "^4.0.0"
+        "imagemin-svgo": "^4.0.0",
+        "node-uuid": "^1.4.3"
     },
 
     "devDependencies": {

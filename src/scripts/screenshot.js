@@ -49,10 +49,10 @@
     }
 
     function parseOptions(base64) {
-        var optionsJSON = window.atob(base64);
-        log('Script options: ' + optionsJSON);
+        var options = JSON.parse(window.atob(base64));
+        log('Script options: ' + JSON.stringify(options));
 
-        return JSON.parse(optionsJSON);
+        return options;
     }
 
 
@@ -101,6 +101,18 @@
             page.clipRect = clipRect;
         }
 
+        page.onError = function (msg, trace) {
+            console.log(msg);
+            trace.forEach(function(item) {
+                console.log('  ', item.file, ':', item.line);
+            });
+        };
+
+        page.onConsoleMessage = function(msg, lineNum, sourceId) {
+            console.log('CONSOLE: ' + msg
+            + (lineNum && sourceId ? ' (from line #' + lineNum + ' in "' + sourceId + '")' : ''));
+        };
+
         return page;
     }
 
@@ -112,6 +124,7 @@
             format = def(options.format, DEF_FORMAT),
             quality = pageQuality(options, format);
 
+        log('Waiting for: ' + delay);
         setTimeout(function () {
             try {
                 var renderOptions = {
@@ -134,7 +147,6 @@
                 }
 
                 page.render(outputFile, renderOptions);
-
                 log('Rendered screenshot: ' + outputFile);
                 onFinish(page);
             } catch (e) {
@@ -145,9 +157,15 @@
 
     function captureScreenshot(base64, outputFile, onFinish) {
         try {
-            var options = parseOptions(base64),
-                page = createPage(options),
-                url = options.url + (options.hashbang ? '/#' + options.hashbang : '');
+            var url,
+                options = parseOptions(base64),
+                hashbang = options.hashbang,
+                page = createPage(options);
+
+            hashbang = hashbang.indexOf('/') === 0 ? hashbang : '/' + hashbang;
+            url = options.url + (options.hashbang ? '#' + options.hashbang : '');
+
+            log('URL:' + url);
 
             page.open(url, function () {
                 try {

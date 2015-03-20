@@ -6,6 +6,7 @@ var _ = require('lodash'),
     path = require('path'),
     imagemin = require('imagemin'),
     utils = require('./utils'),
+    uuid = require('node-uuid'),
 
     SCRIPT_FILE = 'scripts/screenshot.js',
 
@@ -16,9 +17,10 @@ var _ = require('lodash'),
 
 /* Configurations and options */
 
-function outputFile(options, conf, base64) {
-    var format = options.format || DEF_FORMAT;
-    return conf.storage + path.sep + base64 + '.' + format;
+function outputFile(options, conf) {
+    var filename = uuid.v4() + new Date().toISOString().replace(':', '-'),
+        format = options.format || DEF_FORMAT;
+    return conf.storage + path.sep + filename + '-printed-map.' + format;
 }
 
 function cliCommand(config) {
@@ -83,7 +85,7 @@ function runCapturingProcess(options, config, outputFile, base64, onFinish) {
 function screenshot(options, config, onFinish) {
     var opts = cleanupOptions(options, config),
         base64 = utils.encodeBase64(opts),
-        file = outputFile(opts, config, base64),
+        file = outputFile(opts, config),
 
         retrieveImageFromStorage = function () {
             logger.debug('Take screenshot from file storage: %s', base64);

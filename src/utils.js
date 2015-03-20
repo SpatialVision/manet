@@ -1,10 +1,9 @@
-"use strict";
 
 var fs = require('fs-extra'),
     joi = require('joi'),
     path = require('path'),
     logger = require('winston'),
-    exec = require('exec'),
+    childProcess = require('child_process'),
 
     URL_PREFIX_HTTP = 'http://',
     URL_PREFIX_HTTPS = 'https://';
@@ -90,8 +89,8 @@ function execProcess(command, options, onClose) {
     var procStart = process.hrtime(),
         opts = options || {};
 
-    exec(command, opts, function(err, out, code) {
-        logger.debug('Process output: %s', out);
+    childProcess.exec(command.join(' '), opts, function(err, out, code) {
+        logger.debug('Process output: ' + out);
 
         if (err) {
             logger.error('Process error: %s', err);
