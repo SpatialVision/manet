@@ -18,9 +18,21 @@ var _ = require('lodash'),
 /* Configurations and options */
 
 function outputFile(options, conf) {
-    var filename = uuid.v4() + new Date().toISOString().replace(':', '-'),
+    var fullFN,
+        filePath = conf.storage,
+        pathSep = path.sep,
+        filename = uuid.v4(),
         format = options.format || DEF_FORMAT;
-    return conf.storage + path.sep + filename + '-printed-map.' + format;
+
+    if(filePath.indexOf(pathSep, filePath.length - pathSep.length) !== -1){
+        pathSep = '';
+    }
+
+    fullFN = filePath + pathSep + filename + '-printed-map.' + format;
+
+    logger.debug('Filename is %s', fullFN);
+
+    return fullFN;
 }
 
 function cliCommand(config) {
