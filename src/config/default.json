@@ -23,11 +23,11 @@
             "win32": "slimerjs.bat"
         },
         "phantomjs": {
-            "linux": "phantomjs",
-            "freebsd": "phantomjs",
-            "sunos": "phantomjs",
-            "darwin": "phantomjs",
-            "win32": "phantomjs"
+            "linux": "phantomjs --ignore-ssl-errors=yes",
+            "freebsd": "phantomjs --ignore-ssl-errors=yes",
+            "sunos": "phantomjs --ignore-ssl-errors=yes",
+            "darwin": "phantomjs --ignore-ssl-errors=yes",
+            "win32": "phantomjs --ignore-ssl-errors=yes"
         }
     },
 
