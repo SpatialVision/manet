@@ -167,8 +167,9 @@
 
             log('URL:' + url);
 
-            page.open(url, function () {
+            page.open(url, function (status) {
                 try {
+                    log('Status returned on open: ' + status);
                     addStyles(page, DEF_STYLES);
                     renderScreenshotFile(page, options, outputFile, onFinish);
                 } catch (e) {
